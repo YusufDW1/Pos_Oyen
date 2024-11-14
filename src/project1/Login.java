@@ -305,7 +305,8 @@ public class Login extends javax.swing.JFrame {
         }
 
     } catch (SQLException e) {
-        e.printStackTrace(); // Tambahkan ini agar dapat melihat error
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
     }
     } 

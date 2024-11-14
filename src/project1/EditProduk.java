@@ -282,6 +282,7 @@ public class EditProduk extends javax.swing.JDialog {
 
     private void bt_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_simpanActionPerformed
         try {
+            String name = txt_namaproduk.getText();
             Connection l = DatabaseConnection.Go();
             String Q = "UPDATE products "
                     + "SET product_name = ?, product_image = ?, product_category = ?, product_supplier = ?, "
@@ -309,6 +310,7 @@ public class EditProduk extends javax.swing.JDialog {
             if (rowsUpdated > 0) {
                 HalamanAdmin.viewDataProduct(""); 
                 JOptionPane.showMessageDialog(this, "Data berhasil diperbarui");
+                Logging.logActivity(" Produk " + name +" berhasil Diubah ");
             } else {
                 JOptionPane.showMessageDialog(this, "Tidak ada data yang ditemukan");
             }

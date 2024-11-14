@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class Logging {
 
-    static String folder = ".Loging";
+    static String folder = "Logging";
     static String home = System.getProperty("user.home");
     static String pathFolder = home + File.separator + folder;
 

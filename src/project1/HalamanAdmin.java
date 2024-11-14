@@ -55,6 +55,7 @@ public class HalamanAdmin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txt_key = new javax.swing.JTextField();
         jLabel163 = new javax.swing.JLabel();
+        btn_Logout = new javax.swing.JButton();
         jScrollPane53 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
@@ -186,7 +187,17 @@ public class HalamanAdmin extends javax.swing.JFrame {
         jLabel163.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel163.setForeground(new java.awt.Color(0, 204, 204));
         jLabel163.setText("Cari Data");
-        jPanel84.add(jLabel163, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 0, 80, 40));
+        jPanel84.add(jLabel163, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 80, 40));
+
+        btn_Logout.setBackground(new java.awt.Color(0, 153, 153));
+        btn_Logout.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btn_Logout.setText("Logout");
+        btn_Logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_Logoutbtn_hapus51btn_hapus48btn_hapusActionPerformed(evt);
+            }
+        });
+        jPanel84.add(btn_Logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 3, -1, 30));
 
         javax.swing.GroupLayout jPanel157Layout = new javax.swing.GroupLayout(jPanel157);
         jPanel157.setLayout(jPanel157Layout);
@@ -548,6 +559,7 @@ public class HalamanAdmin extends javax.swing.JFrame {
                             S.executeUpdate(Q);
                             viewDataProduct("");
                             JOptionPane.showMessageDialog(this, "Produk " + productName + " telah terhapus");
+                            Logging.logActivity(" Produk " + productName + " berhasil dihapus ");
                         } catch (SQLException e) {
                             JOptionPane.showMessageDialog(this, "Gagal menghapus data produk");
                         }
@@ -582,6 +594,18 @@ public class HalamanAdmin extends javax.swing.JFrame {
         
         viewDataProduct(w); 
     }//GEN-LAST:event_keyProductKeyReleased
+
+    private void btn_Logoutbtn_hapus51btn_hapus48btn_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Logoutbtn_hapus51btn_hapus48btn_hapusActionPerformed
+        // TODO add your handling code here:
+        int response = JOptionPane.showConfirmDialog(this, "Apakah Anda yakin ingin logout?", "Konfirmasi Logout", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (response == JOptionPane.YES_OPTION) {
+            // Menutup halaman admin dan membuka halaman login jika pengguna memilih "Yes"
+            this.setVisible(false);
+            Login loginPage = new Login();
+            loginPage.setVisible(true);
+        }
+    }//GEN-LAST:event_btn_Logoutbtn_hapus51btn_hapus48btn_hapusActionPerformed
 
     /**
      * @param args the command line arguments
@@ -625,6 +649,7 @@ public class HalamanAdmin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Background;
     private javax.swing.JPanel DataUser;
+    private javax.swing.JButton btn_Logout;
     private javax.swing.JButton btn_edit;
     private javax.swing.JButton btn_edit2;
     private javax.swing.JButton btn_hapus;
