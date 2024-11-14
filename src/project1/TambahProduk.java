@@ -307,6 +307,7 @@ public class TambahProduk extends javax.swing.JDialog {
 
             HalamanAdmin.viewDataProduct("");
             JOptionPane.showMessageDialog(this, "Data berhasil disimpan");
+            Loging.logActivity(" user " + name + " berhasil dihapus ");
 
         } catch (NumberFormatException | SQLException e) {
             //System.out.println(e.getMessage());

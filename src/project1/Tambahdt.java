@@ -215,6 +215,7 @@ public class Tambahdt extends javax.swing.JDialog {
             HalamanAdmin.viewData("");
             JOptionPane.showMessageDialog(this, "Data berhasil disimpan");
             txt_nama.requestFocus();
+            Logging.logActivity(" user " + name + " berhasil Tambah ");
         } catch (Exception e) {
              JOptionPane.showMessageDialog(this, "Terjadi kesalahan: " + e.getMessage());
         }

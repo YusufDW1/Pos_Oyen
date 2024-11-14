@@ -218,6 +218,7 @@ public class Editdt extends javax.swing.JDialog {
             HalamanAdmin.viewData(""); 
             JOptionPane.showMessageDialog(this, "Data berhasil diubah");
             txt_nama.requestFocus();
+            Logging.logActivity(" user " + name + " berhasil DiUbah ");
         } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(this, "Terjadi kesalahan: " + e.getMessage());
         }

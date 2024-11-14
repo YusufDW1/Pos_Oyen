@@ -73,8 +73,6 @@ public class HalamanAdmin extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(2000, 2000));
-        setPreferredSize(new java.awt.Dimension(600, 700));
 
         Background.setBackground(new java.awt.Color(0, 102, 102));
         Background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -417,6 +415,7 @@ public class HalamanAdmin extends javax.swing.JFrame {
         int n = jTable1.getSelectedRow();
         if(n != -1){
             int id = Integer.parseInt(jTable1.getValueAt(n, 0).toString());
+            String nama = jTable1.getValueAt(n, 2).toString();
 //            JOptionPane.showMessageDialog(this, id); 
             
             int pilihan = JOptionPane.showConfirmDialog(this, 
@@ -429,8 +428,9 @@ public class HalamanAdmin extends javax.swing.JFrame {
                     Connection K = DatabaseConnection.Go();
                     Statement S = K.createStatement();
                     S.executeUpdate(Q);
-                    viewData(""); 
-                } catch (Exception e) {
+                    viewData("");
+                    Logging.logActivity(" user "+nama+" berhasil dihapus "); 
+                } catch (SQLException e) {
                 }
             }else {
                 //no
