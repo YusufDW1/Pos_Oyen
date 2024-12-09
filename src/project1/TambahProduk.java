@@ -281,7 +281,6 @@ public class TambahProduk extends javax.swing.JDialog {
     private void bt_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_simpanActionPerformed
         // TODO add your handling code here:
         try {
-            String nama = txt_namaproduk.getText();
             Connection K = DatabaseConnection.Go();
             String Q = "INSERT INTO products ("
                     + "product_code,"
@@ -305,13 +304,15 @@ public class TambahProduk extends javax.swing.JDialog {
             ps.setDouble(7, Double.parseDouble(txt_hargabeli.getText()));
             ps.setInt(8, Integer.parseInt(txt_stok.getText()));
             ps.executeUpdate();
+            
+            // Menambahkan log aktivitas untuk mencatat produk yang berhasil ditambahkan
+            Logging.logActivity("Produk berhasil ditambahkan: Kode Produk = " + txt_kodeproduk.getText() + ", Nama Produk = " + txt_namaproduk.getText());
 
             HalamanAdmin.viewDataProduct("");
             JOptionPane.showMessageDialog(this, "Data berhasil disimpan");
-            Logging.logActivity(" Produk " + nama +" berhasil Ditambah ");
 
         } catch (NumberFormatException | SQLException e) {
-            //System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan: " + e.getMessage()); 
         }
 
     }//GEN-LAST:event_bt_simpanActionPerformed

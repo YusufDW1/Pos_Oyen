@@ -1,5 +1,5 @@
 /*
- /* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license//
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package project1;
@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 
 public class EditProduk extends javax.swing.JDialog {
     
-    private int Id;
+    private int id;
     private String KP;
     private String NP;
     private String GP;
@@ -191,16 +191,17 @@ public class EditProduk extends javax.swing.JDialog {
                                         .addGap(8, 8, 8)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(txt_namaproduk, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                                    .addComponent(txt_kodeproduk, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txt_gambar, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
-                                    .addComponent(cmb_kategori, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmb_supplier, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txt_hargabeli, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_hargajual, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_stok, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txt_kodeproduk)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(txt_gambar, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
+                                        .addComponent(cmb_kategori, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cmb_supplier, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txt_hargabeli)
+                                        .addComponent(txt_hargajual)
+                                        .addComponent(txt_stok)))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -282,35 +283,41 @@ public class EditProduk extends javax.swing.JDialog {
 
     private void bt_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_simpanActionPerformed
         try {
-            String name = txt_namaproduk.getText();
             Connection l = DatabaseConnection.Go();
             String Q = "UPDATE products "
-                    + "SET product_name = ?, product_image = ?, product_category = ?, product_supplier = ?, "
-                    + "product_price_s = ?, product_price_b = ?, product_stock = ? WHERE p"
-                    + "roduct_code = ?";
+                    + "SET product_code = ?, product_name = ?, product_image = ?, product_category = ?, product_supplier = ?, "
+                    + "product_price_s = ?, product_price_b = ?, product_stock = ? WHERE id = ?";
 
-            PreparedStatement ps = l.prepareStatement(Q);
-            ps.setString(1, txt_namaproduk.getText());
-            ps.setString(2, txt_gambar.getText());
 
-            if (cmb_kategori.getSelectedItem() != null && cmb_supplier.getSelectedItem() != null) {
-                String[] X = cmb_kategori.getSelectedItem().toString().split("-");
-                String[] Y = cmb_supplier.getSelectedItem().toString().split("-");
-                ps.setInt(3, Integer.parseInt(X[0]));
-                ps.setInt(4, Integer.parseInt(Y[0]));
-            }
+        PreparedStatement ps = l.prepareStatement(Q);
 
-            ps.setDouble(5, Double.parseDouble(txt_hargajual.getText()));
-            ps.setDouble(6, Double.parseDouble(txt_hargabeli.getText()));
-            ps.setInt(7, Integer.parseInt(txt_stok.getText()));
-            ps.setString(8, txt_kodeproduk.getText()); 
+        // Mengisi parameter sesuai urutan
+        ps.setString(1, txt_kodeproduk.getText()); // Mengisi kode produk yang dapat diubah
+        ps.setString(2, txt_namaproduk.getText());
+        ps.setString(3, txt_gambar.getText());
+
+        // Mengambil id kategori dan supplier dari combo box
+        String[] X = cmb_kategori.getSelectedItem().toString().split("-");
+        String[] Y = cmb_supplier.getSelectedItem().toString().split("-");
+        ps.setInt(4, Integer.parseInt(X[0])); // Kategori ID
+        ps.setInt(5, Integer.parseInt(Y[0])); // Supplier ID
+
+        // Mengisi harga jual, harga beli, dan stok
+        ps.setDouble(6, Double.parseDouble(txt_hargajual.getText()));
+        ps.setDouble(7, Double.parseDouble(txt_hargabeli.getText()));
+        ps.setInt(8, Integer.parseInt(txt_stok.getText()));
+
+        // Menggunakan ID unik untuk kondisi WHERE
+        ps.setInt(9, getId()); // ID unik produk sebagai syarat pembaruan
             
             int rowsUpdated = ps.executeUpdate();
 
             if (rowsUpdated > 0) {
                 HalamanAdmin.viewDataProduct(""); 
                 JOptionPane.showMessageDialog(this, "Data berhasil diperbarui");
-                Logging.logActivity(" Produk " + name +" berhasil Diubah ");
+                
+                // Menambahkan log aktivitas untuk mencatat produk yang berhasil diperbarui
+                Logging.logActivity("Produk dengan ID = " + getId() + ", Berhasil Di Ubah");
             } else {
                 JOptionPane.showMessageDialog(this, "Tidak ada data yang ditemukan");
             }
@@ -325,7 +332,7 @@ public class EditProduk extends javax.swing.JDialog {
     }//GEN-LAST:event_bt_tidakActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                JFileChooser jfc = new JFileChooser();
+        JFileChooser jfc = new JFileChooser();
         jfc.setDialogTitle("Pilih Gambar Produk");
 
         // Show the dialog and get the user's selection
@@ -424,12 +431,12 @@ public class EditProduk extends javax.swing.JDialog {
     private javax.swing.JTextField txt_namaproduk;
     private javax.swing.JTextField txt_stok;
     // End of variables declaration//GEN-END:variables
-public int getId() {
-        return Id;
+    public int getId() {
+        return id;
     }
 
     public void setId(int id) {
-        this.Id = Id;
+        this.id = id;
     }
 
     public String getNP() {

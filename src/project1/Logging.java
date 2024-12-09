@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package project1;
 
 import java.io.File;
@@ -13,13 +9,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Logging {
-
-    static String folder = "Logging";
-    static String home = System.getProperty("user.home");
+    static String folder = ".Logging"; //nama untuk folder
+    static String home = System.getProperty("user.home"); //menyimpan 
     static String pathFolder = home + File.separator + folder;
 
-    static String logFile = "Log.txt";
+    static String logFile = "Log.txt"; //nama untuk file txt
     static String pathLog = pathFolder + File.separator + logFile;
+    
     
     public static String getDateNow() {
         Date d = new Date();
@@ -29,14 +25,22 @@ public class Logging {
 
     public static void logActivity(String activity) {
         try {
+            // Membuat folder ".Logging" jika belum ada
             File f = new File(pathFolder);
-            f.mkdir();  // Membuat folder "aktivitas" jika belum ada
+            if (!f.exists()) {
+                f.mkdir();
+            }
 
+            // Membuat file "Log.txt" jika belum ada
             File log = new File(pathLog);
-            log.createNewFile();  // Membuat file "log.txt" jika belum ada
+            if (!log.exists()) {
+                log.createNewFile();
+            }
 
+            // Menambahkan entri log dengan timestamp
             String logEntry = "\n[" + getDateNow() + "] " + activity;
 
+            // Menulis ke file log
             Files.write(
                 Paths.get(pathLog),
                 logEntry.getBytes(),
